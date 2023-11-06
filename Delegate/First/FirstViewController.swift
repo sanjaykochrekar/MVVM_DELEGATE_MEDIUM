@@ -24,7 +24,7 @@ class FirstViewController: UIViewController {
         let button = UIButton()
         button.configuration = .filled()
         button.tintColor = .red
-        button.setTitle("SecondViewController", for: .normal)
+        button.setTitle("Navigate To SecondVC", for: .normal)
         button.addTarget(self, action: #selector(handleNavigation), for: .touchUpInside)
         
         view.addSubview(button)

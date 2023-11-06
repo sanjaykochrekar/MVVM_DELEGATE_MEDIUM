@@ -37,7 +37,7 @@ class SecondViewController: UIViewController {
         
         countLabel = UILabel()
         countLabel.text = "0"
-        countLabel.font = .systemFont(ofSize: 24)
+        countLabel.font = .systemFont(ofSize: 50, weight: .bold)
         countLabel.textColor = .black
         
         view.addSubview(countLabel)
