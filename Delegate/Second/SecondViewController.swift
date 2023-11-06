@@ -25,6 +25,13 @@ class SecondViewController: UIViewController {
     }
     
     
+    deinit {
+        print("SecondViewController deinit")
+    }
+    
+    
+    
+    
     override func loadView() {
         super.loadView()
         createUI()
