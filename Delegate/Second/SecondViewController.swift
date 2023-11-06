@@ -10,26 +10,22 @@ import UIKit
 
 
 class SecondViewController: UIViewController {
-    var countLabel: UILabel!
-    var count = 0
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
+    var numberList: [String] = []
+    var tableView: UITableView!
     
-    // called on cliking "Add 1" button
-    @objc func incrementCount() {
-        count += 1
-        countLabel.text = "\(count)"
+    
+    @objc func addNumberPress() {
+        numberList.append("\(Int.random(in: 0...1000))")
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     
     deinit {
         print("SecondViewController deinit")
     }
-    
-    
     
     
     override func loadView() {
@@ -42,28 +38,42 @@ class SecondViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        countLabel = UILabel()
-        countLabel.text = "0"
-        countLabel.font = .systemFont(ofSize: 50, weight: .bold)
-        countLabel.textColor = .black
+        tableView = UITableView(frame: view.bounds)
+        tableView.dataSource = self
+        tableView.backgroundColor = .white
+        view.addSubview(tableView)
         
-        view.addSubview(countLabel)
         
-        countLabel.translatesAutoresizingMaskIntoConstraints = false
-        countLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        countLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        let fab = UIButton()
+        fab.configuration = .filled()
+        fab.tintColor = .red
+        fab.setTitle("Add Number", for: .normal)
+        fab.addTarget(self, action: #selector(addNumberPress), for: .touchUpInside)
         
-        let button = UIButton()
-        button.configuration = .filled()
-        button.tintColor = .red
-        button.setTitle("Add 1", for: .normal)
-        button.addTarget(self, action: #selector(incrementCount), for: .touchUpInside)
+        view.addSubview(fab)
         
-        view.addSubview(button)
+        fab.translatesAutoresizingMaskIntoConstraints = false
+        fab.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        fab.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40).isActive = true
         
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        button.topAnchor.constraint(equalTo: countLabel.bottomAnchor, constant: 40).isActive = true
-    
     }
+}
+
+
+// MARK: - UITableViewDataSource Methods
+extension SecondViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        numberList.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = numberList[indexPath.row]
+        cell.backgroundColor = .clear
+        cell.textLabel?.textColor = .black
+        return cell
+    }
+    
 }
