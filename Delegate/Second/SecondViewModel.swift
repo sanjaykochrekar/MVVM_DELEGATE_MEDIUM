@@ -8,12 +8,19 @@
 import Foundation
 
 
+protocol SecondViewModelDelegate: AnyObject {
+    func reloadTableView()
+}
+
+
 class SecondViewModel {
-    private var count = 0
+    weak var delegate: SecondViewModelDelegate?
+    
+    var numberList: [String] = []
     
     
-    func incrementCount() {
-        count += 1
+    func addNumber() {
+        numberList.append("\(Int.random(in: 0...1000))")
+        delegate?.reloadTableView()
     }
-    
 }

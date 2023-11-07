@@ -11,15 +11,16 @@ import UIKit
 
 class SecondViewController: UIViewController {
     
-    var numberList: [String] = []
+    lazy var vm = SecondViewModel()
     var tableView: UITableView!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        vm.delegate = self
+    }
     
     @objc func addNumberPress() {
-        numberList.append("\(Int.random(in: 0...1000))")
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
+        vm.addNumber()
     }
     
     
@@ -64,16 +65,27 @@ class SecondViewController: UIViewController {
 extension SecondViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        numberList.count
+        vm.numberList.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = numberList[indexPath.row]
+        cell.textLabel?.text = vm.numberList[indexPath.row]
         cell.backgroundColor = .clear
         cell.textLabel?.textColor = .black
         return cell
+    }
+    
+}
+
+
+extension SecondViewController: SecondViewModelDelegate {
+    
+    func reloadTableView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
 }
